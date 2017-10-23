@@ -3,10 +3,61 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:local="clr-namespace:HtmlEditor"
-        mc:Ignorable="d"
-        Title="Html Editor with RadRichTextBox" Height="350" Width="525">
-    <Grid>
-        
+        Title="Html Editor with RadRichTextBox" mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Height="600" Width="800">
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock Text="Click to add new note --> "
+                           FontSize="9" FontStyle="Italic" />
+                <telerik:RadButton Content="Add" HorizontalAlignment="Right"
+                                   Margin="8 0 8 8" MinWidth="60"
+                                   Click="AddButton_Click"/>
+            </StackPanel>
+            <telerik:RadListBox x:Name="NoteListBox" Grid.Row="1"
+                                ItemsSource="{Binding Notes, Mode=OneWay}"
+                                MouseDoubleClick="NoteListBox_MouseDoubleClick" />
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="HTML" VerticalAlignment="Center">
+                <TextBlock.LayoutTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-90"/>
+                    </TransformGroup>
+                </TextBlock.LayoutTransform>
+            </TextBlock>
+            <TextBox Grid.Column="1" IsReadOnly="True" TextWrapping="Wrap"
+                     Text="{Binding ElementName=NoteListBox, Path=SelectedItem.Text, Mode=TwoWay}"                     
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
+            <TextBlock Grid.Row="1" Text="Plain Text" VerticalAlignment="Center">
+                <TextBlock.LayoutTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-90"/>
+                    </TransformGroup>
+                </TextBlock.LayoutTransform>
+            </TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" TextWrapping="Wrap"
+                     Text="{Binding ElementName=NoteListBox, Path=SelectedItem.Text, Mode=OneWay, Converter={local:HtmlToTextConverter}}"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </Grid>
     </Grid>
 </Window>
