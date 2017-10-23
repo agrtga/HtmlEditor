@@ -50,10 +50,10 @@ namespace HtmlEditor
         public override string ToString()
         {
             string preview = HtmlConverter.StripAll(Text)
-                .Replace(Environment.NewLine, " ")
-                .Substring(0, 20);
+                .Replace(Environment.NewLine, " ");
+            int previewLen = Math.Min(20, preview.Length);
 
-            return $"{Created.ToShortTimeString()} {preview}";
+            return $"{Created.ToShortTimeString()} {preview.Substring(0, previewLen)}";
         }
 
         /// <summary>
